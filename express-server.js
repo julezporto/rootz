@@ -1,15 +1,27 @@
-const { Pool } = require('pg');
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const db = require('./queries')
+const port = 3000
 
-// need to add .env file to hide database info on git
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
 
-const pool = new Pool({
-  user: 'your_username',
-  password: 'your_password',
-  host: 'localhost',
-  port: 5432, // default Postgres port
-  database: 'your_database_name'
-});
+app.get('/', (request, response) => {
+  response.json({ info: 'Node.js, Express, and Postgres API' })
+})
 
-module.exports = {
-  query: (text, params) => pool.query(text, params)
-};
+app.get('/plants', db.getPlants)
+app.get('/plants/:id', db.getPlantById)
+
+// app.post('/users', db.createUser)
+// app.put('/users/:id', db.updateUser)
+// app.delete('/users/:id', db.deleteUser)
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`)
+})
