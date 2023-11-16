@@ -20,5 +20,5 @@ Created by Juliana Porto, Julie Vieira, Khushita Joshi, and Adhiraj Budukh
 5. Open the terminal and make sure you are in the Rootz folder directory
 6. Run `npm install`
 7. Run `npm start`
-8. Open a browser and go to localhost:3000
-9. Check database connection by going to localhost:3000/plants
+8. Open a browser and go to `localhost:3000`
+9. Check database connection by going to `localhost:3000/plants`
