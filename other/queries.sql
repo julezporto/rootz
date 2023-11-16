@@ -88,6 +88,28 @@ Begin
     End if;
 End;
 /
+--------------------------------------------------Password trigger for PGAdmin
+CREATE OR REPLACE FUNCTION user_password_trigger_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.password !~ '.*[!@#$^*].*' THEN
+        RAISE EXCEPTION 'Password must have at least one of the special characters: !@#$^*';
+    END IF;
+
+    IF LENGTH(NEW.password) < 8 THEN
+        RAISE EXCEPTION 'Password must be at least 8 characters';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER user_password_trigger
+BEFORE INSERT OR UPDATE ON userAccount
+FOR EACH ROW
+EXECUTE FUNCTION user_password_trigger_function();
+-------------------------------------------------------
+
 
 -- Trigger for post content censorship
 select * from Post;
