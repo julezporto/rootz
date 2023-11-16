@@ -19,7 +19,7 @@
 // [ ] navigate to index.html (or home.html) from changepass.html change password button
 // [ ]
 
-// TODO: Login feature
+// TODO: Login feature @Juliana
 // [ ] Check existing user by username in database
 //     [ ] If user does not exist send error message
 // [ ] Check that password matches username
@@ -36,7 +36,7 @@
 //     [ ] Update new password to match user input
 //         [ ] Make sure password is updated in database
 
-// TODO: Like feature
+// TODO: Like feature @Julie
 // [ ] Ensure user can click ‘Like’ button on a specific plant
 //     [ ] Add plant to ‘Likes’ table with user who is logged in and the plantID
 //     [ ] Change button icon to filled star
@@ -47,20 +47,20 @@
 //     [ ] Change button icon to empty star
 //     [ ] Keep track of a flag variable that will tell if the ‘Like’ button is clicked or not
 
-// TODO: Comments feature
+// TODO: Comments feature @Julie or @Juliana
 // [ ] User can type a message in textbox and click ‘Post’
 //     [ ] If content inappropriate based on censorship trigger, send error message
 // [ ] Make posts available to all users
 // [ ] Posts will record user and the content of the post
 //     [ ] Ensure title of post and content of post are filled out, otherwise give an error
 
-// TODO: Search feature
+// TODO: Search feature @Adhiraj or @Khushita
 // [ ] When for search :
 //     [ ] User can directly hit search, the temp. Humidity, water, brightness parameters will be selected as default what we have set and selected results will be shown
 //     [ ] User can only change one filer and select ‘any’ option in other filters and generate the results
 //     [ ] Same thing as above step user can do it with 2 or 3 filters and put 4th filter option as ‘any’
 
-// TODO: Best Rootz feature
+// TODO: Best Rootz feature @Adhiraj or @Khushita
 // [ ] Best Rootz is plant with max number of likes
 // [ ] All users can see details of Best Rootz
 // [ ] Clicking on Best Rootz directs user to that plant's page
