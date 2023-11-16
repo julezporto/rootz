@@ -21,7 +21,7 @@ CREATE TABLE plants (
     brightnessDirection VARCHAR(8) NOT NULL,
     temperatureLowF INTEGER NOT NULL,
     temperatureHighF INTEGER NOT NULL,
-    humidity NUMBER NOT NULL,
+    humidity NUMERIC(3, 1) NOT NULL,
     daysBetweenWatering INTEGER NOT NULL,
     imageURL CHAR(57) NOT NULL
 );
