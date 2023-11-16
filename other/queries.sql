@@ -88,7 +88,7 @@ Begin
     End if;
 End;
 /
---------------------------------------------------Password trigger for PGAdmin
+--------------------------------------------------Password trigger for PGAdmin---------
 CREATE OR REPLACE FUNCTION user_password_trigger_function()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -108,7 +108,7 @@ CREATE TRIGGER user_password_trigger
 BEFORE INSERT OR UPDATE ON userAccount
 FOR EACH ROW
 EXECUTE FUNCTION user_password_trigger_function();
--------------------------------------------------------
+----------------------------------------------------------------------------------------------
 
 
 -- Trigger for post content censorship
@@ -127,7 +127,25 @@ Begin
     END IF;
 END;
 /
+-------------------------------Censorship Trigger for the PGAdmin----------------------
+CREATE OR REPLACE FUNCTION censor_comment_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Check if the comment contains any forbidden words
+    IF NEW.content ~* '(Stupid|Fword|Mad|Idiot)' THEN
+        -- Replace forbidden words with asterisks
+        NEW.content := regexp_replace(NEW.content, '(Stupid|Fword|Mad|Idiot)', '****', 'gi');
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
+CREATE TRIGGER censor_comment
+BEFORE INSERT ON post
+FOR EACH ROW
+EXECUTE FUNCTION censor_comment_function();
+
+-------------------------------------------------------------------------------------------
 /* Views */
 -- show only the title, content, and rating from the posts for the user view
 Create or replace View showPosts As (select title, content, rating From Post);
