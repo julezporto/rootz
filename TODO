@@ -1,0 +1,66 @@
+// TODO: Finish adding html pages
+// [ ] plant.html page that displays information for specific plant
+
+// TODO: Make all hrefs in html buttons
+// [ ] index.html login button
+// [ ] index.html create account button
+// [ ] createAccount.html create account button
+// [ ] user.html change password button
+// [ ] user.html logout button
+// [x] changepass.html change password button
+
+// TODO: Add routing to access different pages through buttons
+// [ ] navigate to createAccount.html from index.html create accoutn button
+// [ ] navigate to home.html from index.html login button
+// [ ] navigate to home.html from createAccount.html create account button
+// [ ] navigate to user.html from home.html user icon
+// [ ] navigate to changepass.html from user.html change password button
+// [ ] navigate to index.html from user.html logout button
+// [ ] navigate to index.html (or home.html) from changepass.html change password button
+// [ ]
+
+// TODO: Login feature
+// [ ] Check existing user by username in database
+//     [ ] If user does not exist send error message
+// [ ] Check that password matches username
+//     [ ] If password is incorrect send error message
+// [ ] Make sure new user can create an account
+//     [ ] Username fits constraints
+//         [ ] If issue with username send error message
+//     [ ] Password fits constraints
+//         [ ] If issue with password send error message
+//     [ ] New user is created in database
+// [ ] Make sure existing user can update password
+//     [ ] See if old password matches password currently in database
+//         [ ] If old password does not match, send error message
+//     [ ] Update new password to match user input
+//         [ ] Make sure password is updated in database
+
+// TODO: Like feature
+// [ ] Ensure user can click ‘Like’ button on a specific plant
+//     [ ] Add plant to ‘Likes’ table with user who is logged in and the plantID
+//     [ ] Change button icon to filled star
+// [ ] Add plant to the user’s ‘Liked’ section of their profile
+//     [ ] Create a table with all the plants the user has liked
+// [ ] Allow user to unlike a plant
+//     [ ] When button is clicked again, remove the plant from ‘Likes’ table
+//     [ ] Change button icon to empty star
+//     [ ] Keep track of a flag variable that will tell if the ‘Like’ button is clicked or not
+
+// TODO: Comments feature
+// [ ] User can type a message in textbox and click ‘Post’
+//     [ ] If content inappropriate based on censorship trigger, send error message
+// [ ] Make posts available to all users
+// [ ] Posts will record user and the content of the post
+//     [ ] Ensure title of post and content of post are filled out, otherwise give an error
+
+// TODO: Search feature
+// [ ] When for search :
+//     [ ] User can directly hit search, the temp. Humidity, water, brightness parameters will be selected as default what we have set and selected results will be shown
+//     [ ] User can only change one filer and select ‘any’ option in other filters and generate the results
+//     [ ] Same thing as above step user can do it with 2 or 3 filters and put 4th filter option as ‘any’
+
+// TODO: Best Rootz feature
+// [ ] Best Rootz is plant with max number of likes
+// [ ] All users can see details of Best Rootz
+// [ ] Clicking on Best Rootz directs user to that plant's page

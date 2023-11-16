@@ -17,7 +17,8 @@ const getPlants = (request, response) => {
   });
 };
 
-// Gets Plant by plantID -- DOES NOT WORK
+// Gets Plant by plantID
+// FIXME: getPlantById in queries.js has undefined column error
 const getPlantById = (request, response) => {
   const plantID = parseInt(request.params.plantID);
 
@@ -29,7 +30,7 @@ const getPlantById = (request, response) => {
   });
 };
 
-
+// Below queries were taken from example so table and attribute names are incorrect
 /*
 const createUser = (request, response) => {
   const { name, email } = request.body
