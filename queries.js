@@ -1,30 +1,34 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'Rootz',
-  host: 'localhost',
-  database: 'rootzdb',
-  password: 'DB542',
-  port: 5432, // default Postgres port
+    user: "postgres",
+    host: "localhost",
+    database: "RootzDB",
+    password: "Jp013015665!",
+    port: 5432,
 })
+
+// Gets all Plants
 const getPlants = (request, response) => {
-  pool.query('SELECT * FROM plants', (error, results) => {
+  pool.query("SELECT * FROM plants", (error, results) => {
     if (error) {
-      throw error
+      throw error;
     }
-    response.status(200).json(results.rows)
-  })
-}
+    response.status(200).json(results.rows);
+  });
+};
 
+// Gets Plant by plantID -- DOES NOT WORK
 const getPlantById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const plantID = parseInt(request.params.plantID);
 
-  pool.query('SELECT * FROM plants WHERE id = $1', [id], (error, results) => {
+  pool.query("SELECT * FROM plants WHERE plantID = $1", [plantID], (error, results) => {
     if (error) {
-      throw error
+      throw error;
     }
-    response.status(200).json(results.rows)
-  })
-}
+    response.status(200).json(results.rows);
+  });
+};
+
 
 /*
 const createUser = (request, response) => {
@@ -68,5 +72,5 @@ const deleteUser = (request, response) => {
 
 module.exports = {
   getPlants,
-  getPlantById
-}
+  getPlantById,
+};
