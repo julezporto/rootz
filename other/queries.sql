@@ -8,6 +8,7 @@ drop view showPosts;
 drop view showUserFavoritePosts;
 drop view showUserPosts;
 
+---------------------------------------------------------Tables creation starts here---------------------------------------
 -- Create plants table
 CREATE TABLE plants (
     plantID INTEGER PRIMARY KEY,
@@ -68,9 +69,12 @@ CREATE TABLE likes (
     CONSTRAINT fk_likes_plantID FOREIGN KEY (plantID) REFERENCES plants(plantID),
     CONSTRAINT fk_likes_username FOREIGN KEY (username) REFERENCES userAccount(username)
 );
+---------------------------------------------------------Tables end here---------------------------------------
 
+---------------------------------------------------------Triggers start here---------------------------------------
 /* Triggers */
--- Trigger for user password
+--------------------------------------------------------------------------------------------
+---------------------------- Trigger for user password--------------------------------------
 Create or replace Trigger userPasswordTrigger
 Before Insert or Update on userAccount
 For Each Row
@@ -88,7 +92,7 @@ Begin
     End if;
 End;
 /
---------------------------------------------------Password trigger for PGAdmin---------
+-----------------------------Password trigger for PGAdmin---------
 CREATE OR REPLACE FUNCTION user_password_trigger_function()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -108,10 +112,13 @@ CREATE TRIGGER user_password_trigger
 BEFORE INSERT OR UPDATE ON userAccount
 FOR EACH ROW
 EXECUTE FUNCTION user_password_trigger_function();
-----------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 
--- Trigger for post content censorship
+---------------------------------------------------------------------------------------------------
+-------------------------------- Trigger for post content censorship-------------------------------
+---------------------------------------------------------------------------------------------------
 select * from Post;
 Create or replace Trigger censor_comment
 Before Insert on post
@@ -127,7 +134,9 @@ Begin
     END IF;
 END;
 /
--------------------------------Censorship Trigger for the PGAdmin----------------------
+---------------------------------------------------------------------------------------------------
+-------------------------------Censorship Trigger for the PGAdmin----------------------------------
+---------------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION censor_comment_function()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -144,13 +153,24 @@ CREATE TRIGGER censor_comment
 BEFORE INSERT ON post
 FOR EACH ROW
 EXECUTE FUNCTION censor_comment_function();
+-------------------------------------------Triggers end here---------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
+--------------------------------------Views start here---------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 /* Views */
+-------------------------------------------------------------------------------------------
 -- show only the title, content, and rating from the posts for the user view
-Create or replace View showPosts As (select title, content, rating From Post);
+-------------------------------------------------------------------------------------------
 
+Create or replace View showPosts As (select title, content, rating From Post);
+----------------as per PGAdmin
+CREATE OR REPLACE VIEW showPosts AS 
+SELECT title, content, rating 
+FROM post;
+-------------------------------------------------------------------------------------------
 -- Show the posts about the user's favorite plants
+-------------------------------------------------------------------------------------------
 Create or replace view showUserFavoritePosts As
     (select title, content, rating
      From
@@ -162,8 +182,18 @@ Create or replace view showUserFavoritePosts As
         natural join
         (select username From userAccount)
      Where username = 'user3'); --replace 'username' with username input
+----------------as per PGAdmin
+CREATE OR REPLACE VIEW showUserFavoritePosts AS 
+SELECT p.title, p.content, p.rating
+FROM post p
+JOIN about a ON p.postID = a.postID
+JOIN likes l ON a.plantID = l.plantID
+JOIN userAccount u ON l.username = u.username
+WHERE u.username = 'user3';
 
+-------------------------------------------------------------------------------------------
 -- Show the posts created by the user logged in
+-------------------------------------------------------------------------------------------
 Create or replace view showUserPosts As
     (select title, content, rating
      From
@@ -173,8 +203,17 @@ Create or replace view showUserPosts As
         natural join
         (select username From userAccount)
      Where username = 'user4'); --replace 'username' with username input
+----------------as per PGAdmin
+CREATE OR REPLACE VIEW showUserPosts AS 
+SELECT p.title, p.content, p.rating
+FROM post p
+JOIN makes m ON p.postID = m.postID
+JOIN userAccount u ON m.username = u.username
+WHERE u.username = 'user4';
 
+-------------------------------------------------------------------------------------------
 -- Get number of likes for each plant
+-------------------------------------------------------------------------------------------
 Create or replace View PlantLikesView AS
     (SELECT commonName, pID.num_likes
      FROM plants
@@ -182,6 +221,13 @@ Create or replace View PlantLikesView AS
         (SELECT plantID, count(username) AS num_likes
          FROM likes
          GROUP BY plantID) pID);
+----------------as per PGAdmin
+CREATE OR REPLACE VIEW PlantLikesView AS 
+SELECT plantID, COUNT(username) AS num_likes
+FROM likes
+GROUP BY plantID;
+
+-------------------------------------------------------------------------------------------
 
 /* Updates */
 -- Update user password format & example
