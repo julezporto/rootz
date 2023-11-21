@@ -2,14 +2,14 @@ const Pool = require('pg').Pool
 const pool = new Pool({
     user: "postgres",
     host: "localhost",
-    database: "rootzdb",
-    password: "rootz@123",
+    database: "RootzDB",
+    password: "Jp013015665!",
     port: 5432,
 })
 
 // Gets all Plants
 const getPlants = (request, response) => {
-  pool.query("SELECT * FROM plants", (error, results) => {
+  pool.query('SELECT * FROM plants', (error, results) => {
     if (error) {
       throw error;
     }
@@ -20,15 +20,83 @@ const getPlants = (request, response) => {
 // Gets Plant by plantID
 // FIXME: getPlantById in queries.js has undefined column error
 const getPlantById = (request, response) => {
-  const plantID = parseInt(request.params.plantID);
+  let plantID = parseInt(request.params.plantID);
+  console.log("ID: " + plantID);
+  plantID = 2
 
-  pool.query("SELECT * FROM plants WHERE plantID = $1", [plantID], (error, results) => {
+  pool.query('SELECT * FROM plants WHERE "plantID"=$1', [plantID], (error, results) => {
     if (error) {
       throw error;
     }
     response.status(200).json(results.rows);
   });
 };
+
+const getMostLikedPlant = (request, response) => {
+  // this creates the view
+  // pool.query('CREATE or REPLACE View PlantLikesView AS ' +
+  //            '(SELECT "commonName", pID."num_likes" FROM plants natural join ' + 
+  //            '(SELECT "plantID", count("username") AS num_likes FROM likes GROUP BY "plantID") pID)', (error, results) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   response.status(200).json(results.rows);
+  // });
+
+  pool.query('SELECT "commonName" FROM PlantLikesView WHERE num_likes = ' +
+             '(SELECT MAX(num_likes) FROM PlantLikesView);', (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+
+const showPosts = (request, response) => {
+  // this creates the view
+  // pool.query('CREATE or REPLACE View showPosts As (select "title", "content", "rating" From Post);', (error, results) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   response.status(200).json(results.rows);
+  // });
+  pool.query('SELECT * FROM showPosts;', (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+
+const showUserFavoritePosts = (request, response) => {
+  username = request.params.username;
+  username = 'user3'
+  console.log("ID: " + username);
+
+  // this creates the view
+  // pool.query('CREATE or REPLACE View showUserFavoritePosts As ' +
+  //            '(SELECT "username", "title", "content", "rating" FROM ' +
+  //              '(SELECT "title", "content", "rating", "postID", "username" FROM post NATURAL JOIN ' +
+  //              '(SELECT "postID", "plantID", "username" FROM about NATURAL JOIN ' +
+  //              '(SELECT "plantID", "username" FROM likes NATURAL JOIN ' +
+  //              '(SELECT "username" FROM useraccount)))))', (error, results) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   response.status(200).json(results.rows);
+  // });
+
+  pool.query('SELECT "title", "content", "rating" FROM showUserFavoritePosts WHERE "username"=$1;', [username], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+
 
 // Below queries were taken from example so table and attribute names are incorrect
 /*
@@ -74,4 +142,7 @@ const deleteUser = (request, response) => {
 module.exports = {
   getPlants,
   getPlantById,
+  getMostLikedPlant,
+  showPosts,
+  showUserFavoritePosts
 };

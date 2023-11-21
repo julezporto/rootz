@@ -2,22 +2,27 @@
 // [ ] plant.html page that displays information for specific plant
 
 // TODO: Make all hrefs in html buttons
-// [ ] index.html login button
-// [ ] index.html create account button
-// [ ] createAccount.html create account button
-// [ ] user.html change password button
-// [ ] user.html logout button
+// [x] index.html login button
+// [x] index.html create account button
+// [x] createAccount.html create account button
+// [x] user.html change password button
+// [x] user.html logout button
 // [x] changepass.html change password button
 
+// TODO: Create routes to access various pages
+// [x] navigate to home.html
+// [x] navigate to createAccount.html
+// [x] navigate to user.html from home.html user icon
+// [x] navigate to changepass.html
+
 // TODO: Add routing to access different pages through buttons
-// [ ] navigate to createAccount.html from index.html create accoutn button
+// [ ] navigate to createAccount.html from index.html create account button
 // [ ] navigate to home.html from index.html login button
 // [ ] navigate to home.html from createAccount.html create account button
 // [ ] navigate to user.html from home.html user icon
 // [ ] navigate to changepass.html from user.html change password button
 // [ ] navigate to index.html from user.html logout button
 // [ ] navigate to index.html (or home.html) from changepass.html change password button
-// [ ]
 
 // TODO: Login feature @Juliana
 // [ ] Check existing user by username in database
