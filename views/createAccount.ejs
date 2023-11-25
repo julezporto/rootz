@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
+    />
+    <title>Rootz - Create Account</title>
+    <!-- Need to add style sheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    />
+    <style>
+      img {
+        width: 7.5%;
+      }
+    </style>
+    <!-- Need to add js file -->
+  </head>
+  <header>
+    <div id="title">
+      <img
+        id="plantIcon"
+        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
+        alt="Potted Plant Icon"
+      />
+      <h1>Rootz</h1>
+    </div>
+    <img
+      id="userIcon"
+      src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072"
+      alt="User Icon"
+    />
+  </header>
+  <body>
+    <h2>Create Account</h2>
+    <form id="createAccountForm" action="/users/createAccount" method="POST">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Name" required />
+      </div>
+      <div>
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input
+          type="text"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div>
+        <label for="password2">Confirm Password</label>
+        <input
+          type="text"
+          id="password2"
+          name="password2"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div>
+        <input type="submit" value="Register" />
+      </div>
+      <a href="/users/login">Already registered? Login here</a>
+    </form>
+  </body>
+  <footer class="footer"></footer>
+</html>

@@ -16,32 +16,37 @@ app.use(
 );
 app.use(express.static("views"));
 
+app.set('view engine', 'ejs');
 
 // Page Directory
 
-// Direct to login page
-app.get('/', (request, response) => {
-  response.sendFile(path.join(__dirname, '/views/index.html'));
-});
-
 // Direct to home page
-app.get('/goHome', (request, response) => {
-  response.sendFile(path.join(__dirname, '/views/home.html'));
+app.get('/', (request, response) => {
+  response.render('home');
 });
 
 // Direct to create account page
-app.get('/goCreateAccount', (request, response) => {
-  response.sendFile(path.join(__dirname, '/views/createAccount.html'));
+app.get('/users/createAccount', (request, response) => {
+  response.render('createAccount');
+});
+
+// Direct to login page
+app.get('/users/login', (request, response) => {
+  response.render('index');
+});
+
+app.get('/users/logout', (request, response) => {
+  response.render('index');
+})
+
+// Direct to user page
+app.get('/users/dashboard', (request, response) => {
+  response.render('user', { user: "Some user" });
 });
 
 // Direct to user page
-app.get('/goUserPage', (request, response) => {
-  response.sendFile(path.join(__dirname, '/views/user.html'));
-});
-
-// Direct to change pass page
-app.get('/goChangePass', (request, response) => {
-  response.sendFile(path.join(__dirname, '/views/changepass.html'));
+app.get('/users/changePass', (request, response) => {
+  response.render('changePass');
 });
 
 

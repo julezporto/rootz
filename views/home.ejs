@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
+    />
+    <title>Rootz - Home</title>
+    <!-- Need to add style sheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    />
+    <style>
+      img {
+        width: 7.5%;
+      }
+    </style>
+    <!-- Need to add js file -->
+  </head>
+  <header>
+    <div id="title">
+      <a href="/home.ejs"
+        ><img
+          id="plantIcon"
+          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
+          alt="Potted Plant Icon"
+      /></a>
+      <h1>Rootz</h1>
+    </div>
+    <a href="/user.ejs"
+      ><img
+        id="userIcon"
+        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072"
+        alt="User Icon"
+    /></a>
+  </header>
+  <body>
+    <h2>Rootz</h2>
+    <div id="bestRootz">
+      <h3>Best Rootz</h3>
+      <table>
+        <thead>
+          <tr>
+            <th id="best-rootz-common-name">Common Name</th>
+            <th id="best-rootz-bio-name">Biological Name</th>
+            <th id="best-rootz-brightness">Brightness</th>
+            <th id="best-rootz-temperature">Temperature</th>
+            <th id="best-rootz-humidity">Humidity</th>
+            <th id="best-rootz-water">Water</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="best-rootz-common-name-val"></td>
+            <td id="best-rootz-bio-name-val"></td>
+            <td id="best-rootz-brightness-val"></td>
+            <td id="best-rootz-temperature-val"></td>
+            <td id="best-rootz-humidity-val"></td>
+            <td id="best-rootz-water-val"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="filter">
+      <p>What are you looking for in your perfect plant?</p>
+      <form id="filterForm">
+        <lable for="brightness">Brightness</lable>
+        <select id="brightness" name="brightness">
+          <option value="lowIndirect">Low Indirect</option>
+          <option value="mediumIndirect">Medium Indirect</option>
+          <option value="highIndirect">High Indirect</option>
+          <option value="lowDirect">Low Direct</option>
+          <option value="mediumDirect">Medium Direct</option>
+          <option value="highDirect">High Direct</option>
+        </select>
+        <lable for="temperature">Temperature</lable>
+        <select id="temperature" name="temperature">
+          <option value="55to75">55F to 75F</option>
+          <option value="60to80">60F to 80F</option>
+          <option value="65to85">65F to 85F</option>
+        </select>
+        <lable for="humidity">Humidity</lable>
+        <select id="humidity" name="humidity">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <lable for="water">Water</lable>
+        <select id="water" name="water">
+          <option value="7">Every 7 days</option>
+          <option value="10">Every 10 days</option>
+          <option value="14">Every 14 days</option>
+        </select>
+        <br />
+        <!--TODO: Add functionality to Search button-->
+        <button id="searchBtn">Search</button>
+      </form>
+    </div>
+
+    <div class="plant-list">
+      <div class="plant-card">
+        <img
+          class="plant"
+          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
+          alt="Plant Image"
+        />
+        <h3>Plant Name</h3>
+        <img
+          class="star"
+          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
+          alt="Empty Star"
+        />
+        <h4>Bio Name</h4>
+        <table>
+          <thead>
+            <tr>
+              <th class="brightness">Brightness</th>
+              <th class="temperature">Temperature</th>
+              <th class="humidity">Humidity</th>
+              <th class="water">Water</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="brightness-val"></td>
+              <td class="temperature-val"></td>
+              <td class="humidity-val"></td>
+              <td class="water-val"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <footer class="footer"></footer>
+</html>
