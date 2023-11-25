@@ -4,7 +4,7 @@ const app = express();
 const db = require('./queries');
 const path = require('path');
 const { request } = require('http');
-const PORT = process.env.PORT || 3000;
+const port = 3000;
 const router = express.Router();
 
 // Middleware to add json and bodyParser
