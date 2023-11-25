@@ -37,6 +37,28 @@
   </header>
   <body>
     <h2>Login</h2>
+
+    <!-- Send text field error messages to user -->
+    <ul>
+      <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+      <li><%= error.message %></li>
+      <% }) %> <% } %>
+    </ul>
+
+    <!-- Send login success messages to user -->
+    <ul>
+      <% if(messages.success_msg) { %>
+      <li><%= messages.success_msg %></li>
+      <% } %>
+    </ul>
+
+    <!-- Send error messages to user -->
+    <ul>
+      <% if (messages.error) { %>
+      <li><%= messages.error %></li>
+      <% } %>
+    </ul>
+
     <form id="loginForm" action="/users/login" method="POST">
       <div>
         <label for="username">Username</label>

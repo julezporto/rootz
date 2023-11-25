@@ -25,16 +25,21 @@
 // [ ] navigate to index.html (or home.html) from changepass.html change password button
 
 // TODO: Login feature @Juliana
-// [ ] Check existing user by username in database
-//     [ ] If user does not exist send error message
-// [ ] Check that password matches username
-//     [ ] If password is incorrect send error message
-// [ ] Make sure new user can create an account
-//     [ ] Username fits constraints
-//         [ ] If issue with username send error message
-//     [ ] Password fits constraints
-//         [ ] If issue with password send error message
-//     [ ] New user is created in database
+// [x] Check existing user by username in database
+//     [x] If user does not exist send error message
+// [x] Check that password matches username
+//     [x] If password is incorrect send error message
+// [x] Make sure new user can create an account
+//     [x] Name fits constraints
+//         [x] If issue with name send error message
+//     [x] Username fits constraints
+//         [x] If issue with username send error message
+//     [x] Password fits constraints
+//         [x] If issue with password send error message
+//     [x] Check existing user by username in database
+//         [x] If user already exist send error message
+//     [x] Add new user information to useraccount table
+//     [x] Notify user their account has been created and that they can now login
 // [ ] Make sure existing user can update password
 //     [ ] See if old password matches password currently in database
 //         [ ] If old password does not match, send error message

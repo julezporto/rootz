@@ -37,6 +37,14 @@
   </header>
   <body>
     <h2>Create Account</h2>
+
+    <!-- Send text field error messages to user -->
+    <ul>
+      <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+      <li><%= error.message %></li>
+      <% }) %> <% } %>
+    </ul>
+
     <form id="createAccountForm" action="/users/createAccount" method="POST">
       <div>
         <label for="name">Name</label>
