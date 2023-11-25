@@ -16,7 +16,6 @@ Created by Juliana Porto, Julie Vieira, Khushita Joshi, and Adhiraj Budukh
    c. [Create Sever & Database in pgAdmin](https://www.youtube.com/watch?v=oWsAYx2R9RI)
 
    d. Create tables in pgAdmin - Table setup can be found in other > queries.sql
-
 3. Input your database information into queries.js
 4. Open the terminal and make sure you are in the Rootz folder directory
 5. Make sure to install all dependencies:
