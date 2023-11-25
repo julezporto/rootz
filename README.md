@@ -25,6 +25,7 @@ Created by Juliana Porto, Julie Vieira, Khushita Joshi, and Adhiraj Budukh
       - Postgresql: npm install pg
       - DB: npm install db
       - Nodemon: npm i -D nodemon
+      - Env: npm i dotenv
 7. Run `npm install`
 8. Run `npm start` (or `npm run dev` to use nodemon)
 9. Open a browser and go to localhost:3000
