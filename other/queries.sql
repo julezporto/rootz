@@ -28,7 +28,7 @@ CREATE TABLE plants (
 );
 
 -- Create userAccount table
-CREATE TABLE userAccount (
+CREATE TABLE useraccount (
     username VARCHAR(20) PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
     password VARCHAR(20) NOT NULL

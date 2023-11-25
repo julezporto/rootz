@@ -50,7 +50,8 @@
       <a href="/users/changePass">Change Password</a>
     </div>
 
-    <h3>Hello <%= user %></h3>
+    <!-- Say hello to user by name -->
+    <h3>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h3>
 
     <div id="liked-plants">
       <h3>Liked Plants</h3>
