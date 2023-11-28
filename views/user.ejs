@@ -40,6 +40,20 @@
   <body>
     <h2>My Rootz</h2>
 
+    <!-- Send password update success messages to user -->
+    <ul>
+      <% if(messages.success_msg) { %>
+      <li><%= messages.success_msg %></li>
+      <% } %>
+    </ul>
+
+    <!-- Send error messages to user -->
+    <ul>
+      <% if (messages.error) { %>
+      <li><%= messages.error %></li>
+      <% } %>
+    </ul>
+
     <!-- Logout button -->
     <div>
       <a href="/users/logout">Logout</a>

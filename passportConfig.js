@@ -1,6 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
 const { pool } = require('./dbConfig');
 
+var theCurrentUser = null;
+
 function initialize(passport) {
     console.log("Initialized");
 
@@ -18,6 +20,8 @@ function initialize(passport) {
 
                 if (results.rows.length > 0) {
                     const user = results.rows[0];
+                    theCurrentUser = username;
+                    console.log(theCurrentUser);
 
                     if (password === user.password) {
                         return done(null, user);

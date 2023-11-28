@@ -69,6 +69,8 @@ app.get('/users/home', (request, response) => {
 
 
 // User
+// TODO: Import theCurrentUser from passportConfig.js with its actual value instead of undefined
+// var theUser = ???;
 
 // Create new user account
 app.post('/users/createAccount', (request, response) => {
@@ -161,6 +163,96 @@ app.post('/users/createAccount', (request, response) => {
     )
   }
 })
+
+// To change user password
+// TODO: Fix this
+app.post('/users/changePass', (request, response) => {
+  // console.log(theUser);
+
+  // Get user input
+  let { oldPassword, newPassword } = request.body;
+  
+  console.log(oldPassword);
+  console.log(newPassword);
+  
+  /*
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!oldPassword || !newPassword) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If new password is too long, return error
+  if (newPassword.length > 20) {
+    errors.push({message: "New password must be less than 20 characters"});
+  }
+
+  // If new password is too short, return error
+  if (newPassword.length < 8) {
+    errors.push({ message: "New password should be at least 8 characters" });
+  }
+
+  // If new password does not have at least one special character, return error
+  // TODO: add the rest of the special characters
+  if (!newPassword.includes("!")) {
+    errors.push({ message: "New password must contain at least 1 special character" });
+  }
+
+  // If new password and old password match, return error
+  if (oldPassword === newPassword) {
+    errors.push({ message: "New password must be different than old password" });
+  }
+
+  // If form validation does not pass:
+  if (errors.length > 0) {
+    // Display errors to the user
+    response.render('changePass', { errors });
+  }
+
+  // If form validation does pass:
+  else {
+    // Check to see if the old password is correct
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1 AND password = $2`,
+      [theUser, oldPassword],
+      (error, results) => {
+        if(error) {
+          throw error;
+        }
+
+        // If the password not correct
+        if (results.rows.length === 0) {
+          // Tell the user the password is incorrect
+          errors.push({ message: "Old password is incorrect" })
+          response.render('changePass', { errors })
+        }
+
+        // If the password is correct
+        else {
+          // Update the user's password in the database
+          pool.query(
+            `UPDATE userAccount
+            SET password = $1
+            WHERE username = $2`,
+            [newPassword, theUser],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+              // Tell the user their password has been updated
+              request.flash('success_msg', "Your password has been successfully updated");
+              response.redirect('/users/dashboard');
+            }
+          )
+        }
+      }
+    )
+  }
+  */
+});
 
 // When the user logs in...
 app.post('/users/login', passport.authenticate('local', {
