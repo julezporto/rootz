@@ -22,7 +22,7 @@
   </head>
   <header>
     <div id="title">
-      <a href="/home.ejs"
+      <a href="/users/home"
         ><img
           id="plantIcon"
           src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
@@ -30,7 +30,7 @@
       /></a>
       <h1>Rootz</h1>
     </div>
-    <a href="/user.ejs"
+    <a href="/users/dashboard"
       ><img
         id="userIcon"
         src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072"
@@ -39,27 +39,31 @@
   </header>
   <body>
     <h2>Change Password</h2>
-    <form id="changePassForm">
-      <label for="oldPass">Old Password</label>
-      <input
-        type="text"
-        id="oldPass"
-        name="oldPass"
-        placeholder="Old Password"
-        required
-      />
-      <br />
-      <label for="newPass">New Password</label>
-      <input
-        type="text"
-        id="newPass"
-        name="newPass"
-        placeholder="New Password"
-        required
-      />
-      <br />
-      <!--TODO: Add functionality to Change Password button-->
-      <button>Change Password</button>
+    <form id="changePassForm" action="/users/changePass" method="POST">
+      <div>
+        <label for="oldPassword">Old Password</label>
+        <input
+          type="text"
+          id="oldPassword"
+          name="oldPassword"
+          placeholder="Old Password"
+          required
+        />
+      </div>
+      <div>
+        <label for="newPassword">New Password</label>
+        <input
+          type="text"
+          id="newPassword"
+          name="newPassword"
+          placeholder="New Password"
+          required
+        />
+      </div>
+      <div>
+        <input type="submit" value="Change Password" />
+      </div>
+      <a href="/users/dashboard">Go Back</a>
     </form>
   </body>
   <footer class="footer"></footer>

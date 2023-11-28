@@ -31,7 +31,7 @@ app.use(passport.session());
 
 // Direct to home page
 app.get('/', (request, response) => {
-  response.render('home');
+  response.render('index');
 });
 
 // Direct to create account page
@@ -60,6 +60,11 @@ app.get('/users/dashboard', checkNotAuthenticated, (request, response) => {
 // Direct to user page
 app.get('/users/changePass', (request, response) => {
   response.render('changePass');
+});
+
+// Direct to home page
+app.get('/users/home', (request, response) => {
+  response.render('home');
 });
 
 
