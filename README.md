@@ -33,6 +33,4 @@ Created by Juliana Porto, Julie Vieira, Khushita Joshi, and Adhiraj Budukh
 6. Run `npm install`
 7. Run `npm start` (or `npm run dev` to use nodemon)
 8. Open a browser and go to localhost:3000
-9. Check database connection by trying to login with existing user:
-   username: user1
-   password: password!
+9. Check database connection by trying to login with an existing user
