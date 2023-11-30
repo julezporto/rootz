@@ -21,6 +21,7 @@ const LocalStrategy = require('passport-local').Strategy;
 // current user variable
 var theCurrentUser = null;
 
+// User login verification and user session setup
 function initialize(passport) {
   console.log("Initialized");
 
