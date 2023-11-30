@@ -371,6 +371,35 @@ app.post('/users/dashboard/addFavorite', (request, response) => {
         response.render('user', { user: request.user.name });
 });
 
+// Best Rootz
+/*
+app.post('/users/home', (request, response) => {
+  pool.query(
+    `SELECT "plantID"
+    FROM PlantLikesView
+    WHERE num_likes = (
+      SELECT MAX(num_likes) FROM PlantLikesView
+    )`,
+    (error, results) => {
+      if (error) {
+         throw error;
+      }
+      // If there is one plant with the max likes
+      if (results.rows.length === 1) {
+        // Send the plantID result
+        //response.send(result);
+        console.log(result);
+      }
+      else if (results.rows.length > 1) {
+        // Pick one if there are multiple
+
+      }
+    }
+  )
+  //response.render('home');
+});
+*/
+
 // Middleware for user access if user is logged in
 function checkAuthenticated(request, response, next) {
   if (request.isAuthenticated()) {
