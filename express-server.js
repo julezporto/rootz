@@ -143,8 +143,6 @@ app.get('/users/home', (request, response) => {
 
 
 // User
-// TODO: Import theCurrentUser from passportConfig.js with its actual value instead of undefined
-// var theUser = ???;
 
 // Create new user account
 app.post('/users/createAccount', (request, response) => {
@@ -241,7 +239,7 @@ app.post('/users/createAccount', (request, response) => {
 // To change user password
 // TODO: Fix this
 app.post('/users/changePass', (request, response) => {
-  // console.log(theUser);
+  console.log(theCurrentUser);
 
   // Get user input
   let { oldPassword, newPassword } = request.body;
@@ -249,7 +247,6 @@ app.post('/users/changePass', (request, response) => {
   console.log(oldPassword);
   console.log(newPassword);
   
-  /*
   // Setup field errors
   let errors = [];
 
@@ -291,7 +288,7 @@ app.post('/users/changePass', (request, response) => {
     pool.query(
       `SELECT * FROM useraccount
       WHERE username = $1 AND password = $2`,
-      [theUser, oldPassword],
+      [theCurrentUser, oldPassword],
       (error, results) => {
         if(error) {
           throw error;
@@ -311,7 +308,7 @@ app.post('/users/changePass', (request, response) => {
             `UPDATE userAccount
             SET password = $1
             WHERE username = $2`,
-            [newPassword, theUser],
+            [newPassword, theCurrentUser],
             (error, results) => {
               if (error) {
                 throw error;
@@ -325,7 +322,6 @@ app.post('/users/changePass', (request, response) => {
       }
     )
   }
-  */
 });
 
 // When the user logs in...
