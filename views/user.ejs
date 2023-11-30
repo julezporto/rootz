@@ -81,6 +81,37 @@
           src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
           alt="Empty Star"
         />
+        <form>
+          <table id="plantsTable">
+            <tr>
+              <th>ID</th>
+              <th>Common Name</th>
+              <th>Biological Name</th>
+              <th>Family</th>
+              <th>Category</th>
+              <th>Origin</th>
+              <th>Climate</th>
+              <th>Brightness Direction</th>
+              <th>Low Temperature</th>
+              <th>High Temperature</th>
+              <th>Humidity</th>
+              <th>Days Between Watering</th>
+              <th>Image</th>
+            </tr>
+          </table>
+        </form>
+        <form id="addFavorite" action="/users/dashboard/addFavorite" method="POST">
+          <div>
+            <input
+              type="text"
+              id="plantID"
+              name="plantID"
+              placeholder="Plant ID"
+              required
+            />
+            <input type="submit" value="Favorite" />
+          </div>
+        </form>
         <h4>Bio Name</h4>
         <table>
           <thead>
@@ -104,4 +135,11 @@
     </div>
   </body>
   <footer class="footer"></footer>
+
+  <script>
+    const favorite = function () {
+      let label = document.getElementById("testing")
+      label.innerHTML = "tester"
+    }
+  </script>
 </html>

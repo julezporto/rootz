@@ -334,6 +334,44 @@ app.post('/users/login', passport.authenticate('local', {
   failureFlash: true
 }));
 
+// Favorited plants
+app.get('/users/dashboard/addFavorite', (request, response) => {
+  response.render('user', { user: request.user.name });
+});
+
+app.post('/users/dashboard/addFavorite', (request, response) => {
+  username = request.user.username
+  // Get user input
+  let { plantID } = request.body;
+  console.log(username + " " + plantID)
+
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!username || !plantID) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If form validation does pass:
+  else {
+          // Insert user info into the database
+          pool.query(
+            `INSERT INTO likes (plantid, username)
+            VALUES ($1, $2)
+            RETURNING username`,
+            [plantID, username],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+            }
+          )
+          console.log(username + " " + plantID)
+        }
+        response.render('user', { user: request.user.name });
+});
+
 // Middleware for user access if user is logged in
 function checkAuthenticated(request, response, next) {
   if (request.isAuthenticated()) {
