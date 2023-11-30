@@ -178,10 +178,10 @@ app.post('/users/createAccount', (request, response) => {
     errors.push({ message: "Password should be at least 8 characters" });
   }
 
-  // If password does not have at least one special character, return error
-  // TODO: add the rest of the special characters
-  if (!password.includes("!")) {
-    errors.push({ message: "Password must contain at least 1 special character" });
+  // If password does not have at least one special character (!@#$^*), return error
+  if (!password.includes("!") && !password.includes("@") && !password.includes("#") && !password.includes("$")
+       && !password.includes("^") && !password.includes("*")) {
+    errors.push({ message: "Password must contain at least 1 special character: !@#$^*" });
   }
 
   // If password 1 doesn't match password 2, return error
@@ -238,7 +238,6 @@ app.post('/users/createAccount', (request, response) => {
 })
 
 // To change user password
-// TODO: Fix this
 app.post('/users/changePass', (request, response) => {
   console.log(theCurrentUser);
 
@@ -266,10 +265,10 @@ app.post('/users/changePass', (request, response) => {
     errors.push({ message: "New password should be at least 8 characters" });
   }
 
-  // If new password does not have at least one special character, return error
-  // TODO: add the rest of the special characters
-  if (!newPassword.includes("!")) {
-    errors.push({ message: "New password must contain at least 1 special character" });
+  // If new password does not have at least one special character (!@#$^*), return error
+  if (!password.includes("!") && !password.includes("@") && !password.includes("#") && !password.includes("$")
+       && !password.includes("^") && !password.includes("*")) {
+    errors.push({ message: "New password must contain at least 1 special character: !@#$^*" });
   }
 
   // If new password and old password match, return error
