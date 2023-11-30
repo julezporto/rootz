@@ -6,8 +6,6 @@ const port = 3000;
 const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
-const initializePassport = require("./passportConfig");
-initializePassport(passport);
 
 // Middleware
 app.use(bodyParser.json());
@@ -17,6 +15,80 @@ app.use(
   })
 );
 app.set('view engine', 'ejs');
+
+const LocalStrategy = require('passport-local').Strategy;
+
+// current user variable
+var theCurrentUser = null;
+
+function initialize(passport) {
+  console.log("Initialized");
+
+  const authenticateUser = (username, password, done) => {
+    console.log(username, password);
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1`,
+      [username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        console.log(results.rows);
+
+        // if the username exists in the database
+        if (results.rows.length > 0) {
+          const user = results.rows[0];
+
+          // if the user's password matches that user's password in the database
+          if (password === user.password) {
+            // set the current user to the username of the account that just logged in
+            theCurrentUser = username;
+            console.log(theCurrentUser);
+            return done(null, user);
+          }
+          // if the user's password does not match that user's password in the database
+          else {
+            // send user an incorrect pass error
+            // NOTE: currently this just crashes
+            return done(null, false, { message: "Password incorrect" });
+          }
+        }
+        // if the username does not exist in the database
+        else {
+          // send user a username not registered error
+          // NOTE: currently this just crashes
+          return done(null, false, { message: "Username not registered" });
+        }
+      }
+    )
+  }
+
+  passport.use(
+    new LocalStrategy({
+      usernameField: "username",
+      passwordField: "password"
+    },
+    authenticateUser)
+  );
+
+  passport.serializeUser((user, done) => done(null, user.username));
+
+  passport.deserializeUser((username, done) => {
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1`,
+      [username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        return done(null, results.rows[0]);
+      }
+    )
+  });
+}
+
 app.use(session({
   secret: "secret",
   resave: false,
@@ -25,6 +97,8 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+initialize(passport);
 
 
 // Page Directory
