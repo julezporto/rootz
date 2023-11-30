@@ -21,6 +21,7 @@ const LocalStrategy = require('passport-local').Strategy;
 // current user variable
 var theCurrentUser = null;
 
+// User login verification and user session setup
 function initialize(passport) {
   console.log("Initialized");
 
@@ -177,10 +178,10 @@ app.post('/users/createAccount', (request, response) => {
     errors.push({ message: "Password should be at least 8 characters" });
   }
 
-  // If password does not have at least one special character, return error
-  // TODO: add the rest of the special characters
-  if (!password.includes("!")) {
-    errors.push({ message: "Password must contain at least 1 special character" });
+  // If password does not have at least one special character (!@#$^*), return error
+  if (!password.includes("!") && !password.includes("@") && !password.includes("#") && !password.includes("$")
+       && !password.includes("^") && !password.includes("*")) {
+    errors.push({ message: "Password must contain at least 1 special character: !@#$^*" });
   }
 
   // If password 1 doesn't match password 2, return error
@@ -237,7 +238,6 @@ app.post('/users/createAccount', (request, response) => {
 })
 
 // To change user password
-// TODO: Fix this
 app.post('/users/changePass', (request, response) => {
   console.log(theCurrentUser);
 
@@ -265,10 +265,10 @@ app.post('/users/changePass', (request, response) => {
     errors.push({ message: "New password should be at least 8 characters" });
   }
 
-  // If new password does not have at least one special character, return error
-  // TODO: add the rest of the special characters
-  if (!newPassword.includes("!")) {
-    errors.push({ message: "New password must contain at least 1 special character" });
+  // If new password does not have at least one special character (!@#$^*), return error
+  if (!password.includes("!") && !password.includes("@") && !password.includes("#") && !password.includes("$")
+       && !password.includes("^") && !password.includes("*")) {
+    errors.push({ message: "New password must contain at least 1 special character: !@#$^*" });
   }
 
   // If new password and old password match, return error
@@ -332,6 +332,44 @@ app.post('/users/login', passport.authenticate('local', {
   failureRedirect: '/users/index',
   failureFlash: true
 }));
+
+// Favorited plants
+app.get('/users/dashboard/addFavorite', (request, response) => {
+  response.render('user', { user: request.user.name });
+});
+
+app.post('/users/dashboard/addFavorite', (request, response) => {
+  username = request.user.username
+  // Get user input
+  let { plantID } = request.body;
+  console.log(username + " " + plantID)
+
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!username || !plantID) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If form validation does pass:
+  else {
+          // Insert user info into the database
+          pool.query(
+            `INSERT INTO likes (plantid, username)
+            VALUES ($1, $2)
+            RETURNING username`,
+            [plantID, username],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+            }
+          )
+          console.log(username + " " + plantID)
+        }
+        response.render('user', { user: request.user.name });
+});
 
 // Middleware for user access if user is logged in
 function checkAuthenticated(request, response, next) {
