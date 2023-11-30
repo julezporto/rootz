@@ -39,6 +39,14 @@
   </header>
   <body>
     <h2>Change Password</h2>
+
+    <!-- Send text field error messages to user -->
+    <ul>
+      <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+      <li><%= error.message %></li>
+      <% }) %> <% } %>
+    </ul>
+
     <form id="changePassForm" action="/users/changePass" method="POST">
       <div>
         <label for="oldPassword">Old Password</label>

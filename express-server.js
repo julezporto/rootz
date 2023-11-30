@@ -6,8 +6,6 @@ const port = 3000;
 const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
-const initializePassport = require("./passportConfig");
-initializePassport(passport);
 
 // Middleware
 app.use(bodyParser.json());
@@ -17,6 +15,80 @@ app.use(
   })
 );
 app.set('view engine', 'ejs');
+
+const LocalStrategy = require('passport-local').Strategy;
+
+// current user variable
+var theCurrentUser = null;
+
+function initialize(passport) {
+  console.log("Initialized");
+
+  const authenticateUser = (username, password, done) => {
+    console.log(username, password);
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1`,
+      [username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        console.log(results.rows);
+
+        // if the username exists in the database
+        if (results.rows.length > 0) {
+          const user = results.rows[0];
+
+          // if the user's password matches that user's password in the database
+          if (password === user.password) {
+            // set the current user to the username of the account that just logged in
+            theCurrentUser = username;
+            console.log(theCurrentUser);
+            return done(null, user);
+          }
+          // if the user's password does not match that user's password in the database
+          else {
+            // send user an incorrect pass error
+            // NOTE: currently this just crashes
+            return done(null, false, { message: "Password incorrect" });
+          }
+        }
+        // if the username does not exist in the database
+        else {
+          // send user a username not registered error
+          // NOTE: currently this just crashes
+          return done(null, false, { message: "Username not registered" });
+        }
+      }
+    )
+  }
+
+  passport.use(
+    new LocalStrategy({
+      usernameField: "username",
+      passwordField: "password"
+    },
+    authenticateUser)
+  );
+
+  passport.serializeUser((user, done) => done(null, user.username));
+
+  passport.deserializeUser((username, done) => {
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1`,
+      [username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        return done(null, results.rows[0]);
+      }
+    )
+  });
+}
+
 app.use(session({
   secret: "secret",
   resave: false,
@@ -25,6 +97,8 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+initialize(passport);
 
 
 // Page Directory
@@ -69,6 +143,8 @@ app.get('/users/home', (request, response) => {
 
 
 // User
+// TODO: Import theCurrentUser from passportConfig.js with its actual value instead of undefined
+// var theUser = ???;
 
 // Create new user account
 app.post('/users/createAccount', (request, response) => {
@@ -161,6 +237,96 @@ app.post('/users/createAccount', (request, response) => {
     )
   }
 })
+
+// To change user password
+// TODO: Fix this
+app.post('/users/changePass', (request, response) => {
+  // console.log(theUser);
+
+  // Get user input
+  let { oldPassword, newPassword } = request.body;
+  
+  console.log(oldPassword);
+  console.log(newPassword);
+  
+  /*
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!oldPassword || !newPassword) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If new password is too long, return error
+  if (newPassword.length > 20) {
+    errors.push({message: "New password must be less than 20 characters"});
+  }
+
+  // If new password is too short, return error
+  if (newPassword.length < 8) {
+    errors.push({ message: "New password should be at least 8 characters" });
+  }
+
+  // If new password does not have at least one special character, return error
+  // TODO: add the rest of the special characters
+  if (!newPassword.includes("!")) {
+    errors.push({ message: "New password must contain at least 1 special character" });
+  }
+
+  // If new password and old password match, return error
+  if (oldPassword === newPassword) {
+    errors.push({ message: "New password must be different than old password" });
+  }
+
+  // If form validation does not pass:
+  if (errors.length > 0) {
+    // Display errors to the user
+    response.render('changePass', { errors });
+  }
+
+  // If form validation does pass:
+  else {
+    // Check to see if the old password is correct
+    pool.query(
+      `SELECT * FROM useraccount
+      WHERE username = $1 AND password = $2`,
+      [theUser, oldPassword],
+      (error, results) => {
+        if(error) {
+          throw error;
+        }
+
+        // If the password not correct
+        if (results.rows.length === 0) {
+          // Tell the user the password is incorrect
+          errors.push({ message: "Old password is incorrect" })
+          response.render('changePass', { errors })
+        }
+
+        // If the password is correct
+        else {
+          // Update the user's password in the database
+          pool.query(
+            `UPDATE userAccount
+            SET password = $1
+            WHERE username = $2`,
+            [newPassword, theUser],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+              // Tell the user their password has been updated
+              request.flash('success_msg', "Your password has been successfully updated");
+              response.redirect('/users/dashboard');
+            }
+          )
+        }
+      }
+    )
+  }
+  */
+});
 
 // When the user logs in...
 app.post('/users/login', passport.authenticate('local', {
