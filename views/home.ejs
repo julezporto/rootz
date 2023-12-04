@@ -116,6 +116,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         var showAllButton = document.getElementById("showAllButton");
         var filterForm = document.getElementById("filterForm");
+        var bestRootzDiv = document.getElementById("bestRootz");
         if (filterForm) {
           filterForm.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -151,15 +152,39 @@
               });
           });
         }
-        fetch("/plants/showAll")
+        fetch("/plants/getbestrootz")
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
-            updatePlantList(data);
+            if (data.length === 1) {
+  const plantID = data[0].plantid;
+  getPlantDetails(plantID);
+} else {
+  console.log("No results or multiple results");
+}
+
           })
           .catch((error) => {
             console.error("Error:", error);
           });
+
+          function getPlantDetails(plantID){
+            fetch(`/plants/getplantdetails?plantID=${plantID}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Update the plant list with the filtered data
+                showBestRootzDetails(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });            
+          }
+
+
         function updatePlantList(data) {
           const plantListContainer = document.querySelector(".plant-list");
           plantListContainer.innerHTML = ""; // Clear existing plant list
@@ -210,6 +235,35 @@
 
             plantListContainer.appendChild(plantCard);
           });
+        }
+
+        
+
+        function showBestRootzDetails(data) {
+          const bestRootz = data[0];
+          bestRootzDiv.innerHTML = `      <h3>Best Rootz</h3>
+      <table>
+        <thead>
+          <tr>
+            <th id="best-rootz-common-name">Common Name</th>
+            <th id="best-rootz-bio-name">Biological Name</th>
+            <th id="best-rootz-brightness">Brightness</th>
+            <th id="best-rootz-temperature">Temperature</th>
+            <th id="best-rootz-humidity">Humidity</th>
+            <th id="best-rootz-water">Water</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="best-rootz-common-name-val">${bestRootz.commonName}</td>
+            <td id="best-rootz-bio-name-val">${bestRootz.biologicalName}</td>
+            <td id="best-rootz-brightness-val">${bestRootz.brightnessDirection} ${bestRootz.brightnessIntensity}</td>
+            <td id="best-rootz-temperature-val">${bestRootz.temperatureLowF}F - ${bestRootz.temperatureHighF}F</td>
+            <td id="best-rootz-humidity-val">${bestRootz.humidity}</td>
+            <td id="best-rootz-water-val">${bestRootz.daysBetweenWatering} days</td>
+          </tr>
+        </tbody>
+      </table>`;
         }
       });
     </script>
