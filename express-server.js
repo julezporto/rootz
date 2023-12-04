@@ -265,10 +265,10 @@ app.post('/users/changePass', (request, response) => {
     errors.push({ message: "New password should be at least 8 characters" });
   }
 
-  // If new password does not have at least one special character (!@#$^*), return error
-  if (!password.includes("!") && !password.includes("@") && !password.includes("#") && !password.includes("$")
-       && !password.includes("^") && !password.includes("*")) {
-    errors.push({ message: "New password must contain at least 1 special character: !@#$^*" });
+  // If new password does not have at least one special character, return error
+  // TODO: add the rest of the special characters
+  if (!newPassword.includes("!")) {
+    errors.push({ message: "New password must contain at least 1 special character" });
   }
 
   // If new password and old password match, return error
@@ -323,6 +323,7 @@ app.post('/users/changePass', (request, response) => {
     )
   }
 });
+
 
 // When the user logs in...
 app.post('/users/login', passport.authenticate('local', {
