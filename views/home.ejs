@@ -13,33 +13,223 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <style>
-      img {
-        width: 7.5%;
+      body {
+        font-size: 1.5em;
+        line-height: 1.6;
+        font-weight: 400;
+        font-family: Raleway, HelveticaNeue, "Helvetica Neue", Helvetica, Arial,
+          sans-serif;
+        color: #222;
+      }
+
+      .plant-card {
+        width: 28vw;
+        margin: auto;
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid rgb(174, 174, 184);
+        background-color: rgb(25, 134, 170);
+        color: aliceblue;
+        box-shadow: 5px 5px 5px 20px solid black;
+        margin: 10px;
+      }
+
+      header {
+        text-align: center;
+        position: relative;
+      }
+
+      #title {
+        margin-bottom: 20px;
+      }
+
+      #plantIcon {
+        width: 15%;
+        display: block;
+        margin: 0 auto;
+      }
+
+      #userIcon {
+        width: 10%;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      h1 {
+        margin: 0;
+      }
+
+      #bestRootz,
+      #filter,
+      .plant-list {
+        text-align: center;
+      }
+
+      table {
+        margin: 0 auto;
+      }
+
+      #filterForm {
+        display: inline-block;
+        text-align: left;
+      }
+
+      #filterForm select {
+        margin-bottom: 10px;
+      }
+
+      .form-row {
+        display: inline-block;
+        text-align: left;
+        margin-bottom: 10px;
+      }
+
+      .plant-card {
+        margin-bottom: 20px;
       }
     </style>
     <!-- Need to add js file -->
+    <script>
+      function toggleHeart(plantID) {
+        // Get the heart icon element
+        const heartIcon = document.getElementById(`heartIcon${plantID}`);
+
+        // Toggle between the empty and filled heart icons
+        if (heartIcon.classList.contains("far")) {
+          heartIcon.classList.remove("far");
+          heartIcon.classList.add("fas");
+        } else {
+          heartIcon.classList.remove("fas");
+          heartIcon.classList.add("far");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var showAllButton = document.getElementById("showAllButton");
+        var filterForm = document.getElementById("filterForm");
+        if (filterForm) {
+          filterForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            // Fetch the data from the server
+            fetch("/plants/plantsFilter", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: new URLSearchParams(new FormData(event.target)),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Update the plant list with the filtered data
+                updatePlantList(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+        }
+        if (showAllButton) {
+          showAllButton.addEventListener("click", function (event) {
+            console.log("clicked showAll");
+            fetch("/plants/showAll")
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                updatePlantList(data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+        }
+        fetch("/plants/showAll")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            updatePlantList(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        function updatePlantList(data) {
+          const plantListContainer = document.querySelector(".plant-list");
+          plantListContainer.innerHTML = ""; // Clear existing plant list
+          // Check if 'data' is an array
+          if (!Array.isArray(data)) {
+            console.error(
+              "Error: Expected an array of plants, but received:",
+              data
+            );
+            plantListContainer.innerHTML = "<h5>No Plants Found</h5>";
+            return;
+          }
+
+          // Iterate through the filtered data and create new plant cards
+          data.forEach((plant) => {
+            const plantCard = document.createElement("div");
+            plantCard.classList.add("plant-card");
+
+            // Add plant card content (modify as needed)
+            plantCard.innerHTML = `
+              <img class="plant" src="${plant.imageURL}" alt="Plant Image" />
+              <h3>${plant.commonName}</h3>
+              <i
+  id="heartIcon${plant.plantID}"
+  class="far fa-heart"
+  style="font-size: 20px; color: red; cursor: pointer;"
+  onclick="toggleHeart(${plant.plantID})">
+</i>              <h4>${plant.biologicalName}</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th class="brightness">Brightness</th>
+                    <th class="temperature">Temperature</th>
+                    <th class="humidity">Humidity</th>
+                    <th class="water">Water</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="brightness-val">${plant.brightnessIntensity} ${plant.brightnessDirection}</td>
+                    <td class="temperature-val">${plant.temperatureLowF} to ${plant.temperatureHighF}</td>
+                    <td class="humidity-val">${plant.humidity}</td>
+                    <td class="water-val">${plant.daysBetweenWatering} days</td>
+                  </tr>
+                </tbody>
+              </table>
+            `;
+
+            plantListContainer.appendChild(plantCard);
+          });
+        }
+      });
+    </script>
   </head>
-  <header>
-    <div id="title">
-      <a href="/users/home"
-        ><img
-          id="plantIcon"
-          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
-          alt="Potted Plant Icon"
-      /></a>
-      <h1>Rootz</h1>
-    </div>
-    <a href="/users/dashboard"
-      ><img
-        id="userIcon"
-        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072"
-        alt="User Icon"
-    /></a>
-  </header>
-  <body>
-    <h2>Rootz</h2>
-    <div id="bestRootz">
+<body>
+  <div class="container">
+    <header style="display: flex; justify-content: space-between; align-items: center;">
+      <div id="title">
+        <a href="/users/home">
+          <img id="plantIcon" src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567" alt="Potted Plant Icon" />
+        </a>
+        <h1>Rootz</h1>
+      </div>
+      <a href="/users/dashboard">
+        <img id="userIcon" src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072" alt="User Icon" />
+      </a>
+    </header>
+    <!-- Rest of your HTML content -->
+  </div>
+        <div id="bestRootz">
       <h3>Best Rootz</h3>
       <table>
         <thead>
@@ -66,43 +256,50 @@
     </div>
 
     <div id="filter">
+      <!-- action-->
       <p>What are you looking for in your perfect plant?</p>
-      <form id="filterForm">
+      <!--  -->
+      <button id="showAllButton">Show All</button>
+      <form id="filterForm" action="/plants/plantsFilter" method="POST">
         <lable for="brightness">Brightness</lable>
         <select id="brightness" name="brightness">
-          <option value="lowIndirect">Low Indirect</option>
-          <option value="mediumIndirect">Medium Indirect</option>
-          <option value="highIndirect">High Indirect</option>
-          <option value="lowDirect">Low Direct</option>
-          <option value="mediumDirect">Medium Direct</option>
-          <option value="highDirect">High Direct</option>
+          <option value="any">Any</option>
+          <option value="low_indirect">Low Indirect</option>
+          <option value="medium_indirect">Medium Indirect</option>
+          <option value="high_indirect">High Indirect</option>
+          <option value="low_direct">Low Direct</option>
+          <option value="medium_direct">Medium Direct</option>
+          <option value="high_direct">High Direct</option>
         </select>
         <lable for="temperature">Temperature</lable>
         <select id="temperature" name="temperature">
+          <option value="any">Any</option>
           <option value="55to75">55F to 75F</option>
           <option value="60to80">60F to 80F</option>
           <option value="65to85">65F to 85F</option>
         </select>
         <lable for="humidity">Humidity</lable>
         <select id="humidity" name="humidity">
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
+          <option value="any">Any</option>
+          <option value="1">Low</option>
+          <option value="2">Medium</option>
+          <option value="3">High</option>
         </select>
         <lable for="water">Water</lable>
         <select id="water" name="water">
+          <option value="any">Any</option>
           <option value="7">Every 7 days</option>
           <option value="10">Every 10 days</option>
           <option value="14">Every 14 days</option>
         </select>
         <br />
         <!--TODO: Add functionality to Search button-->
-        <button id="searchBtn">Search</button>
+        <button type="submit" >Submit</button>
       </form>
     </div>
 
     <div class="plant-list">
-      <div class="plant-card">
+       
         <img
           class="plant"
           src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
@@ -110,10 +307,11 @@
         />
         <h3>Plant Name</h3>
         <img
-          class="star"
-          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
-          alt="Empty Star"
-        />
+        class="star"
+        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
+        alt="Empty Star"
+        style="width: 20px; height: 20px;"/>
+      
         <h4>Bio Name</h4>
         <table>
           <thead>
@@ -135,6 +333,7 @@
         </table>
       </div>
     </div>
-  </body>
+  </div>
   <footer class="footer"></footer>
+</body>
 </html>
