@@ -372,6 +372,148 @@ app.post('/users/dashboard/addFavorite', (request, response) => {
         response.render('user', { user: request.user.name });
 });
 
+// Filter Feature
+
+// To show all plants
+app.get('/plants/showAll', (request, response) => {
+  pool.query(
+    'SELECT * FROM plants',
+    [],
+    (error, results) => {
+      if (error) {
+        console.log("Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+        return;
+      } 
+      if (results.rows.length > 0) {
+        console.log("Results:", results.rows);
+        response.status(200).json(results.rows);
+      } 
+      else {
+        console.log("There are no plants in the database");
+        response.status(404).json({ message: "No plants found" });
+      }
+    }
+  );
+});
+
+// Filter Plants
+app.post('/plants/plantsFilter', (request, response) => {
+  console.log("testtttt");
+  // Accessing request body
+  const requestBody = request.body;
+  console.log("Request Body:", requestBody);
+
+  // Accessing specific parameters from the request body
+  const { brightness, temperature, humidity, water } = request.body;
+var newBrightness, newBrightnessIntensity, newBrightnessDirection, newTemperature, newTemperatureLowF, newTemperatureHighF, newHumidity, newWater;
+const values = [];
+
+let query = `SELECT * FROM plants
+WHERE `
+
+newBrightness = brightness;
+newTemperature = temperature;
+newHumidity = humidity;
+newWater = water;
+
+
+  if (brightness != null && temperature != null) {
+
+    if (newHumidity == "any")
+    {
+      console.log("Inside any humidity");
+      newHumidity = 4;
+      query += `   "humidity" <= $${values.length + 1}`;
+      values.push(newHumidity);
+    }
+    else{
+      query += `   "humidity" <= $${values.length + 1}`;
+      values.push(newHumidity);
+    }
+if (newWater == "any")
+{
+  console.log("Inside any water");
+}
+else{
+  query += `   AND "daysBetweenWatering" <= $${values.length + 1}`;
+  values.push(newWater);
+}
+
+    console.log("Brightness Value:", brightness);
+    const [brightnessIntensity, brightnessDirection] = brightness.split('_');
+    console.log("Temperature Value:", temperature);
+
+    // Splitting temperature into low and high
+    const [temperatureLowF, temperatureHighF] = temperature.split('to').map(value => value.trim());
+
+    if (temperatureHighF == null)
+    {
+      console.log("Inside undefined temperatureHighF");
+    }
+    else{
+    newTemperatureLowF = temperatureLowF;
+    newTemperatureHighF = temperatureHighF;    
+    query += ` AND "temperatureLowF" = $${values.length + 1}`;
+    values.push(newTemperatureLowF);
+    query += `  AND "temperatureHighF" >= $${values.length + 1}`;
+    values.push(newTemperatureHighF);
+
+    }
+    if (brightnessDirection == null)
+    {
+      console.log("Inside undefined brightnessDirection");
+    }
+    else{
+      console.log("Inside else");
+      newBrightnessDirection = brightnessDirection;
+      newBrightnessIntensity = brightnessIntensity;
+      query += `  AND "brightnessIntensity" = $${values.length + 1}`;
+      values.push(newBrightnessIntensity);
+      query += ` AND "brightnessDirection" = $${values.length + 1}`;  
+      values.push(newBrightnessDirection);
+    }
+
+
+    console.log("Brightness Intensity:", brightnessIntensity);
+    console.log("Brightness Direction:", brightnessDirection);
+    console.log("Temperature Low F:", temperatureLowF);
+    console.log("Temperature High F:", temperatureHighF);
+    console.log("Humidity:", humidity);
+    console.log("Water:", water); // Change from 'daysBetweenWatering' to 'water'
+
+    console.log("new brightness value")
+    console.log("Brightness Intensity:", newBrightnessIntensity);
+    console.log("Brightness Direction:", newBrightnessDirection);
+    console.log("Temperature Low F:", newTemperatureLowF);
+    console.log("Temperature High F:", newTemperatureHighF);
+    console.log("Humidity:", newHumidity);
+    console.log("Water:", newWater); // Change from 'daysBetweenWatering' to 'water'
+
+
+ 
+    pool.query(
+      query,
+      values,
+      (error, results) => {
+        if (error) {
+          console.log("Error:", error);
+          response.status(500).json({ error: "Internal Server Error" });
+          return;
+        } 
+        if (results.rows.length > 0) {
+          console.log("Results:", results.rows);
+          response.status(200).json(results.rows);
+        } 
+        else {
+          console.log("There is no plant that fits that description");
+          response.status(404).json({ message: "No matching plants found" });
+        }
+      }
+    );
+  }
+});
+
 // Best Rootz
 /*
 app.post('/users/home', (request, response) => {
