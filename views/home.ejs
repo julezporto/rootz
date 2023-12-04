@@ -64,6 +64,10 @@
         right: 0;
       }
 
+      #filter {
+        padding-top: 25px;
+      }
+
       h1 {
         margin: 0;
       }
@@ -214,22 +218,36 @@
       });
     </script>
   </head>
-<body>
-  <div class="container">
-    <header style="display: flex; justify-content: space-between; align-items: center;">
-      <div id="title">
-        <a href="/users/home">
-          <img id="plantIcon" src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567" alt="Potted Plant Icon" />
+  <body>
+    <div class="container">
+      <header
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <div id="title">
+          <a href="/users/home">
+            <img
+              id="plantIcon"
+              src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/vecteezy_plant-in-pot-icon_9376677_486.png?v=1698151708567"
+              alt="Potted Plant Icon"
+            />
+          </a>
+          <h1>Rootz</h1>
+        </div>
+        <a href="/users/dashboard">
+          <img
+            id="userIcon"
+            src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072"
+            alt="User Icon"
+          />
         </a>
-        <h1>Rootz</h1>
-      </div>
-      <a href="/users/dashboard">
-        <img id="userIcon" src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/userIcon.png?v=1698152143072" alt="User Icon" />
-      </a>
-    </header>
-    <!-- Rest of your HTML content -->
-  </div>
-        <div id="bestRootz">
+      </header>
+      <!-- Rest of your HTML content -->
+    </div>
+    <div id="bestRootz">
       <h3>Best Rootz</h3>
       <table>
         <thead>
@@ -293,47 +311,44 @@
           <option value="14">Every 14 days</option>
         </select>
         <br />
-        <!--TODO: Add functionality to Search button-->
-        <button type="submit" >Submit</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
 
     <div class="plant-list">
-       
-        <img
-          class="plant"
-          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
-          alt="Plant Image"
-        />
-        <h3>Plant Name</h3>
-        <img
+      <img
+        class="plant"
+        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
+        alt="Plant Image"
+      />
+      <h3>Plant Name</h3>
+      <img
         class="star"
         src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
         alt="Empty Star"
-        style="width: 20px; height: 20px;"/>
-      
-        <h4>Bio Name</h4>
-        <table>
-          <thead>
-            <tr>
-              <th class="brightness">Brightness</th>
-              <th class="temperature">Temperature</th>
-              <th class="humidity">Humidity</th>
-              <th class="water">Water</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="brightness-val"></td>
-              <td class="temperature-val"></td>
-              <td class="humidity-val"></td>
-              <td class="water-val"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        style="width: 20px; height: 20px"
+      />
+
+      <h4>Bio Name</h4>
+      <table>
+        <thead>
+          <tr>
+            <th class="brightness">Brightness</th>
+            <th class="temperature">Temperature</th>
+            <th class="humidity">Humidity</th>
+            <th class="water">Water</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="brightness-val"></td>
+            <td class="temperature-val"></td>
+            <td class="humidity-val"></td>
+            <td class="water-val"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <footer class="footer"></footer>
-</body>
+    <footer class="footer"></footer>
+  </body>
 </html>
