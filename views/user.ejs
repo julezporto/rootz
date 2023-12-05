@@ -315,6 +315,7 @@
           method: "GET",
       }).then((response) => response.json())
         .then((json) => {
+          // console.log(json)
           table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Rating</th></tr>"
           for(let post of json){
             table.innerHTML += "<tr><th>" + post.plantid +  "</th>" +

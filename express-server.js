@@ -586,9 +586,9 @@ app.get('/users/dashboard/showFavoritePosts', async (request, response) =>{
   username = request.user.username
   console.log(username + " requests to see posts about favorite plants");
   pool.query(
-    '(SELECT "plantID", title, content, rating FROM post natural join ' + 
-             '(SELECT "plantID" FROM about natural join ' +
-             '(SELECT plantid AS "plantID" FROM likes WHERE username=$1)))',
+    '(SELECT plantid, title, content, rating FROM post natural join ' + 
+      '(SELECT "plantID" AS plantid, "postID" FROM about WHERE "plantID" IN ' +
+      '(SELECT plantid FROM likes WHERE username=$1)))',
     [username],
     (error, results) => {
       if (error) {
