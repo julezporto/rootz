@@ -124,7 +124,7 @@
         <button onclick="showAllPlants()">Show All Plants</button>
         <button onclick="showFavoritePlants()">Show My Favorite Plants</button>
         <button onclick="hideAllPlants()">Hide All Plants</button>
-
+        <br>
         <form
           id="addFavorite"
           action="/users/dashboard/addFavorite"
@@ -132,10 +132,13 @@
         >
           <div>
             <input
-              type="text"
+              type="number"
               id="plantID"
               name="plantID"
               placeholder="Add Plant ID"
+              max="62"
+              min="1"
+              step="1"
               required
             />
             <input type="submit" value="Favorite" />
@@ -149,10 +152,13 @@
         >
           <div>
             <input
-              type="text"
+              type="number"
               id="plantID"
               name="plantID"
               placeholder="Remove Plant ID"
+              max="62"
+              min="1"
+              step="1"
               required
             />
             <input type="submit" value="Remove" />
@@ -183,7 +189,7 @@
         <button onclick="showAllPosts()">Show All Posts</button>
         <button onclick="showFavoritePosts()">Show Posts About Favorites</button>
         <button onclick="hideAllPosts()">Hide All Posts</button>
-
+        <br>
         <form
           id="addPost"
           action="/users/dashboard/addPost"
@@ -191,10 +197,13 @@
         >
           <div>
             <input
-              type="text"
+              type="number"
               id="plantID"
               name="plantID"
               placeholder="Plant ID"
+              max="62"
+              min="1"
+              step="1"
               required
             />
             <br>
