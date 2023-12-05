@@ -82,6 +82,9 @@
       td {
         padding: 5px;
       }
+      #logoutLink {
+        padding-bottom: 15px;
+      }
     </style>
     <!-- Need to add js file -->
   </head>
@@ -120,14 +123,11 @@
     </ul>
 
     <!-- Logout button -->
-    <div>
-      <a href="/users/logout">Logout</a>
-    </div>
+    <a href="/users/logout">Logout</a>
+    <br />
 
     <!-- Change password button -->
-    <div>
-      <a href="/users/changePass">Change Password</a>
-    </div>
+    <a href="/users/changePass">Change Password</a>
 
     <!-- Say hello to user by name -->
     <h3>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h3>
