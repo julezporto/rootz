@@ -215,8 +215,8 @@
         <button onclick="hideAllPosts()">Hide All Posts</button>
 
         <form
-          id="addFavorite"
-          action="/users/dashboard/addFavorite"
+          id="addPost"
+          action="/users/dashboard/addPost"
           method="POST"
         >
           <div>
@@ -326,12 +326,11 @@
           method: "GET",
       }).then((response) => response.json())
         .then((json) => {
-          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Timestamp</th><th>Rating</th></tr>"
+          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th></th><th>Rating</th></tr>"
           for(let post of json){
             table.innerHTML += "<tr><th>" + post.plantID +  "</th>" +
                                "<th>" + post.title + "</th>" +
                                "<th>" + post.content + "</th>" +
-                               "<th>" + post.timestamp + "</th>" +
                                "<th>" + post.rating + "</th></tr>"
           } 
       });
@@ -343,12 +342,11 @@
           method: "GET",
       }).then((response) => response.json())
         .then((json) => {
-          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Timestamp</th><th>Rating</th></tr>"
+          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Rating</th></tr>"
           for(let post of json){
             table.innerHTML += "<tr><th>" + post.plantid +  "</th>" +
                                "<th>" + post.title + "</th>" +
                                "<th>" + post.content + "</th>" +
-                               "<th>" + post.timestamp + "</th>" +
                                "<th>" + post.rating + "</th></tr>"
           } 
       });

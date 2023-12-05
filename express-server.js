@@ -489,13 +489,58 @@ app.get('/users/dashboard/showAllPlants', async (request, response) =>{
   );
 })
 
+// User adds post
+app.post('/users/dashboard/addPost', (request, response) => {
+  username = request.user.username
+  // Get user input
+  let { plantID, title, content, rating } = request.body;
+
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!username || !plantID || !title || !content || !rating) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If form validation does pass:
+  else {
+    console.log(username + " is creating a post about plant " + plantID);
+    timestamp = Date.now()
+    let postID = timestamp % 1000
+    // Insert post into the database
+    pool.query(
+      `INSERT INTO post ("postID", title, timestamp, content, rating)
+      VALUES ($1, $2, null, $3, $4)`,
+      [postID, title, content, rating],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+      }
+    )
+    // Insert the plant ID and post ID into About table
+    pool.query(
+      `INSERT INTO about ("plantID", "postID")
+      VALUES ($1, $2)`,
+      [plantID, postID],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+      }
+    )
+  }
+  response.render('user', { user: request.user.name });
+});
+
 // Display all posts
 app.get('/users/dashboard/showAllPosts', async (request, response) =>{
   console.log("user requests to see favorite all posts");
   // this creates the view
   pool.query('CREATE or REPLACE View showposts AS ' +
              '(SELECT "plantID", title, content, timestamp, rating FROM about natural join ' + 
-             '(SELECT title, content, timestamp, rating FROM post))', (error, results) => {
+             '(SELECT "postID", title, content, timestamp, rating FROM post))', (error, results) => {
     if (error) {
       throw error;
     }
