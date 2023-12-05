@@ -211,12 +211,7 @@
             plantCard.innerHTML = `
               <img class="plant" src="${plant.imageURL}" alt="Plant Image" />
               <h3>${plant.commonName}</h3>
-              <i
-  id="heartIcon${plant.plantID}"
-  class="far fa-heart"
-  style="font-size: 20px; color: red; cursor: pointer;"
-  onclick="toggleHeart(${plant.plantID})">
-</i>              <h4>${plant.biologicalName}</h4>
+              <h4>${plant.biologicalName}</h4>
               <table>
                 <thead>
                   <tr>
@@ -368,6 +363,9 @@
         <br />
         <button type="submit">Submit</button>
       </form>
+    </div>
+
+    <div class="plant-list">
     </div>
     <footer class="footer"></footer>
   </body>
