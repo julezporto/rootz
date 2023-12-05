@@ -66,11 +66,11 @@
 
 // TODO: Search feature @Adhiraj or @Khushita
 // [ ] When for search :
-//     [ ] User can directly hit search, the temp. Humidity, water, brightness parameters will be selected as default what we have set and selected results will be shown
-//     [ ] User can only change one filer and select ‘any’ option in other filters and generate the results
-//     [ ] Same thing as above step user can do it with 2 or 3 filters and put 4th filter option as ‘any’
+//     [x] User can directly hit search, the temp. Humidity, water, brightness parameters will be selected as default what we have set and selected results will be shown
+//     [x] User can only change one filer and select ‘any’ option in other filters and generate the results
+//     [x] Same thing as above step user can do it with 2 or 3 filters and put 4th filter option as ‘any’
 
 // TODO: Best Rootz feature @Adhiraj or @Khushita
-// [ ] Best Rootz is plant with max number of likes
-// [ ] All users can see details of Best Rootz
-// [ ] Clicking on Best Rootz directs user to that plant's page
+// [x] Best Rootz is plant with max number of likes
+// [x] All users can see details of Best Rootz
+// [x] Clicking on Best Rootz directs user to that plant's page
