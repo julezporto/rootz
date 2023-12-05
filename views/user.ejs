@@ -69,7 +69,6 @@
         padding: 10px;
         border: 1px solid rgb(174, 174, 184);
         background-color: rgb(25, 134, 170);
-        color: aliceblue;
         box-shadow: 5px 5px 5px 20px solid black;
         margin: 10px;
       }
@@ -80,6 +79,7 @@
 
       th,
       td {
+        width: 50px;
         padding: 5px;
       }
     </style>
@@ -129,6 +129,11 @@
       <a href="/users/changePass">Change Password</a>
     </div>
 
+    <!-- Discussion Board button -->
+    <div>
+      <a href="/users/discussionBoard">Discussion Board</a>
+    </div>
+
     <!-- Say hello to user by name -->
     <h3>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h3>
 
@@ -146,6 +151,44 @@
           src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
           alt="Empty Star"
         />
+        <button onclick="showAllPlants()">Show All Plants</button>
+        <button onclick="showFavoritePlants()">Show My Favorite Plants</button>
+        <button onclick="hideAllPlants()">Hide All Plants</button>
+
+        <form
+          id="addFavorite"
+          action="/users/dashboard/addFavorite"
+          method="POST"
+        >
+          <div>
+            <input
+              type="text"
+              id="plantID"
+              name="plantID"
+              placeholder="Add Plant ID"
+              required
+            />
+            <input type="submit" value="Favorite" />
+          </div>
+        </form>
+
+        <form
+          id="removeFavorite"
+          action="/users/dashboard/removeFavorite"
+          method="POST"
+        >
+          <div>
+            <input
+              type="text"
+              id="plantID"
+              name="plantID"
+              placeholder="Remove Plant ID"
+              required
+            />
+            <input type="submit" value="Remove" />
+          </div>
+        </form>
+
         <form>
           <table id="plantsTable">
             <tr>
@@ -156,6 +199,7 @@
               <th>Category</th>
               <th>Origin</th>
               <th>Climate</th>
+              <th>Brightness Intensity</th>
               <th>Brightness Direction</th>
               <th>Low Temperature</th>
               <th>High Temperature</th>
@@ -165,6 +209,11 @@
             </tr>
           </table>
         </form>
+
+        <button onclick="showAllPosts()">Show All Posts</button>
+        <button onclick="showFavoritePosts()">Show Posts About Favorites</button>
+        <button onclick="hideAllPosts()">Hide All Posts</button>
+
         <form
           id="addFavorite"
           action="/users/dashboard/addFavorite"
@@ -178,27 +227,45 @@
               placeholder="Plant ID"
               required
             />
-            <input type="submit" value="Favorite" />
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Title"
+              required
+            />
+            <input
+              type="text"
+              id="content"
+              name="content"
+              placeholder="Content"
+              required
+            />
+            <input
+              type="number"
+              step="1"
+              min="1"
+              max="5"
+              id="rating"
+              name="rating"
+              placeholder="Rating"
+              required
+            />
+            <input type="submit" value="Post" />
           </div>
         </form>
-        <h4>Bio Name</h4>
+
+        <h4>Discussion Board</h4>
         <table>
-          <thead>
+          <table id="discussionBoard">
             <tr>
-              <th class="brightness">Brightness</th>
-              <th class="temperature">Temperature</th>
-              <th class="humidity">Humidity</th>
-              <th class="water">Water</th>
+              <th class="plantReference">Plant</th>
+              <th class="title">Title</th>
+              <th class="content">Content</th>
+              <th class="timestamp">Timestamp</th>
+              <th class="rating">Rating</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="brightness-val"></td>
-              <td class="temperature-val"></td>
-              <td class="humidity-val"></td>
-              <td class="water-val"></td>
-            </tr>
-          </tbody>
+          </table>
         </table>
       </div>
     </div>
@@ -206,9 +273,95 @@
   <footer class="footer"></footer>
 
   <script>
-    const favorite = function () {
-      let label = document.getElementById("testing");
-      label.innerHTML = "tester";
-    };
+    const showAllPlants = function () {
+      let table = document.getElementById("plantsTable")
+      let response = fetch("/users/dashboard/showAllPlants",{
+          method: "GET",
+      }).then((response) => response.json())
+        .then((json) => {
+          table.innerHTML = "<tr><th>ID</th><th>Common Name</th><th>Biological Name</th><th>Family</th><th>Category</th><th>Origin</th><th>Climate</th><th>Brightness Intensity</th><th>Brightness Direction</th><th>Low Temperature</th><th>High Temperature</th><th>Humidity</th><th>Days Between Watering</th><th>Image</th></tr>"
+          for(let plant of json){
+            console.log(plant.imageURL);
+            let img = "<img src='" + plant.imageURL + "' width='50px' height='50px' />"
+            table.innerHTML += "<tr><th>" + plant.plantID + "</th><th>" + plant.commonName + "</th>" +
+                               "<th>" + plant.biologicalName + "</th><th>" + plant.family + "</th>" +
+                               "<th>" + plant.category + "</th><th>" + plant.origin + "</th>" +
+                               "<th>" + plant.climate + "</th><th>" + plant.brightnessIntensity + "</th>" +
+                               "<th>" + plant.brightnessDirection + "</th><th>" + plant.temperatureLowF + "</th>" +
+                               "<th>" + plant.temperatureHighF + "</th><th>" + plant.humidity + "</th>" +
+                               "<th>" + plant.daysBetweenWatering + "</th><th>" + img + "</th></tr>"
+          } 
+      });
+    }
+
+    const showFavoritePlants = function() {
+      let table = document.getElementById("plantsTable")
+      let response = fetch("/users/dashboard/showFavoritePlants",{
+          method: "GET",
+      }).then((response) => response.json())
+        .then((json) => {
+          table.innerHTML = "<tr><th>ID</th><th>Common Name</th><th>Biological Name</th><th>Family</th><th>Category</th><th>Origin</th><th>Climate</th><th>Brightness Intensity</th><th>Brightness Direction</th><th>Low Temperature</th><th>High Temperature</th><th>Humidity</th><th>Days Between Watering</th><th>Image</th></tr>"
+          for(let plant of json){
+            console.log(plant.imageURL);
+            let img = "<img src='" + plant.imageURL + "' width=100% height=50px />"
+            table.innerHTML += "<tr><th>" + plant.plantid + "</th><th>" + plant.commonName + "</th>" +
+                               "<th>" + plant.biologicalName + "</th><th>" + plant.family + "</th>" +
+                               "<th>" + plant.category + "</th><th>" + plant.origin + "</th>" +
+                               "<th>" + plant.climate + "</th><th>" + plant.brightnessIntensity + "</th>" +
+                               "<th>" + plant.brightnessDirection + "</th><th>" + plant.temperatureLowF + "</th>" +
+                               "<th>" + plant.temperatureHighF + "</th><th>" + plant.humidity + "</th>" +
+                               "<th>" + plant.daysBetweenWatering + "</th><th>" + img + "</th></tr>"
+          } 
+      });
+    }
+
+    const hideAllPlants = function() {
+      let table = document.getElementById("plantsTable")
+      table.innerHTML = "<tr><th>ID</th><th>Common Name</th><th>Biological Name</th><th>Family</th><th>Category</th><th>Origin</th><th>Climate</th><th>Brightness Direction</th><th>Low Temperature</th><th>High Temperature</th><th>Humidity</th><th>Days Between Watering</th><th>Image</th></tr>"
+    }
+
+    const showAllPosts = function() {
+      let table = document.getElementById("discussionBoard");
+      let response = fetch("/users/dashboard/showAllPosts",{
+          method: "GET",
+      }).then((response) => response.json())
+        .then((json) => {
+          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Timestamp</th><th>Rating</th></tr>"
+          for(let post of json){
+            table.innerHTML += "<tr><th>" + post.plantID +  "</th>" +
+                               "<th>" + post.title + "</th>" +
+                               "<th>" + post.content + "</th>" +
+                               "<th>" + post.timestamp + "</th>" +
+                               "<th>" + post.rating + "</th></tr>"
+          } 
+      });
+    }
+
+    const showFavoritePosts = function() {
+      let table = document.getElementById("discussionBoard")
+      let response = fetch("/users/dashboard/showFavoritePosts",{
+          method: "GET",
+      }).then((response) => response.json())
+        .then((json) => {
+          table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Timestamp</th><th>Rating</th></tr>"
+          for(let post of json){
+            table.innerHTML += "<tr><th>" + post.plantid +  "</th>" +
+                               "<th>" + post.title + "</th>" +
+                               "<th>" + post.content + "</th>" +
+                               "<th>" + post.timestamp + "</th>" +
+                               "<th>" + post.rating + "</th></tr>"
+          } 
+      });
+    }
+
+    const hideAllPosts = function() {
+      let table = document.getElementById("discussionBoard")
+      table.innerHTML = "<tr><th>Plant</th><th>Title</th><th>Content</th><th>Timestamp</th><th>Rating</th></tr>"
+    }
+
+    window.onload = function() {
+      showFavoritePlants();
+      showAllPosts();
+    }
   </script>
 </html>

@@ -127,6 +127,12 @@ app.get("/users/logout", (request,response) => {
     });
 });
 
+// Direct to discussion baord
+app.get('/users/discussionBoard', checkAuthenticated, (request, response) => {
+  console.log("load discussion board");
+  response.render('discussionBoard');
+});
+
 // Direct to user page
 app.get('/users/dashboard', checkNotAuthenticated, (request, response) => {
   response.render('user', { user: request.user.name });
@@ -339,6 +345,7 @@ app.get('/users/dashboard/addFavorite', (request, response) => {
   response.render('user', { user: request.user.name });
 });
 
+// User adds plant to their favorites
 app.post('/users/dashboard/addFavorite', (request, response) => {
   username = request.user.username
   // Get user input
@@ -355,6 +362,17 @@ app.post('/users/dashboard/addFavorite', (request, response) => {
 
   // If form validation does pass:
   else {
+    pool.query(
+      `SELECT * FROM likes
+      WHERE plantid = $1 AND username = $2`,
+      [plantID, username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+        // User has not yet liked this plant
+        if(results.rows == 0){
+          console.log(username + " is adding plant " + plantID + " to their favorites")
           // Insert user info into the database
           pool.query(
             `INSERT INTO likes (plantid, username)
@@ -367,10 +385,184 @@ app.post('/users/dashboard/addFavorite', (request, response) => {
               }
             }
           )
-          console.log(username + " " + plantID)
         }
-        response.render('user', { user: request.user.name });
+      }
+    )
+  }
+  response.render('user', { user: request.user.name });
 });
+
+// User removes plant from their favorites
+app.post('/users/dashboard/removeFavorite', (request, response) => {
+  username = request.user.username
+  // Get user input
+  let { plantID } = request.body;
+  console.log(username + " requests to remove plant " + plantID + " from favorites")
+
+  // Setup field errors
+  let errors = [];
+
+  // If a field is empty, return error
+  if (!username || !plantID) {
+    errors.push({message: "Please enter all fields"});
+  }
+
+  // If form validation does pass:
+  else {
+    // console.log(username + " is removing plant " + plantID + " from their favorites")
+    // Insert user info into the database
+    pool.query(
+      `DELETE FROM likes
+      WHERE plantid = $1 AND username = $2`,
+      [plantID, username],
+      (error, results) => {
+        if (error) {
+          throw error;
+        }
+      }
+    )
+  }
+  response.render('user', { user: request.user.name });
+});
+
+// Display user's favorite plants in user table
+app.get('/users/dashboard/showFavoritePlants', async (request, response) =>{
+  // this creates the view
+  // pool.query('CREATE or REPLACE View showuserfavoriteplants AS ' +
+  //            '(SELECT * FROM plants join ' + 
+  //            '(SELECT username, plantid FROM likes) l ' +
+  //            'on l.plantid = plants."plantID")', (error, results) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   response.status(200).json(results.rows);
+  // });
+
+  username = request.user.username
+  console.log(username + " requests to see favorite plants");
+  pool.query(
+    `SELECT * FROM showuserfavoriteplants
+      WHERE username = $1`,
+    [username],
+    (error, results) => {
+      if (error) {
+        console.log("Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+        return;
+      } 
+      if (results.rows.length > 0) {
+        // console.log("Results:", results.rows);
+        response.status(200).json(results.rows);
+        return;
+      } 
+      else {
+        console.log("There are no plants in the database");
+        response.status(404).json({ message: "No plants found" });
+        return;
+      }
+    }
+  );
+})
+
+// Display all plants in user table
+app.get('/users/dashboard/showAllPlants', async (request, response) =>{
+  pool.query(
+    'SELECT * FROM plants',
+    [],
+    (error, results) => {
+      if (error) {
+        console.log("Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+        return;
+      } 
+      if (results.rows.length > 0) {
+        // console.log("Results:", results.rows);
+        response.status(200).json(results.rows);
+        return;
+      } 
+      else {
+        console.log("There are no plants in the database");
+        response.status(404).json({ message: "No plants found" });
+        return;
+      }
+    }
+  );
+})
+
+// Display all posts
+app.get('/users/dashboard/showAllPosts', async (request, response) =>{
+  console.log("user requests to see favorite all posts");
+  // this creates the view
+  pool.query('CREATE or REPLACE View showposts AS ' +
+             '(SELECT "plantID", title, content, timestamp, rating FROM about natural join ' + 
+             '(SELECT title, content, timestamp, rating FROM post))', (error, results) => {
+    if (error) {
+      throw error;
+    }
+  });
+
+  pool.query(
+    `SELECT * FROM showposts`,
+    (error, results) => {
+      if (error) {
+        console.log("Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+        return;
+      } 
+      if (results.rows.length > 0) {
+        // console.log("Results:", results.rows);
+        response.status(200).json(results.rows);
+        return;
+      } 
+      else {
+        console.log("There are no plants in the database");
+        response.status(404).json({ message: "No plants found" });
+        return;
+      }
+    }
+  );
+})
+
+// Display posts about the user's favorite plants
+app.get('/users/dashboard/showFavoritePosts', async (request, response) =>{
+  username = request.user.username
+  // this creates the view
+  // pool.query('CREATE or REPLACE View showuserfavoriteposts AS ' +
+  //            '(SELECT username, plantid, title, content, timestamp, rating FROM post natural join ' + 
+  //            '(SELECT username, plantid FROM about join ' +
+  //            '(SELECT username, plantid FROM likes) l ' +
+  //            'on l.plantid = about."plantID"))', (error, results) => {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   response.status(200).json(results.rows);
+  // });
+
+  username = request.user.username
+  console.log(username + " requests to see posts about favorite plants");
+  pool.query(
+    `SELECT * FROM showuserfavoriteposts
+      WHERE username = $1`,
+    [username],
+    (error, results) => {
+      if (error) {
+        console.log("Error:", error);
+        response.status(500).json({ error: "Internal Server Error" });
+        return;
+      } 
+      if (results.rows.length > 0) {
+        // console.log("Results:", results.rows);
+        response.status(200).json(results.rows);
+        return;
+      } 
+      else {
+        console.log("There are no plants in the database");
+        response.status(404).json({ message: "No plants found" });
+        return;
+      }
+    }
+  );
+})
 
 // Filter Feature
 
