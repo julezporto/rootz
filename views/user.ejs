@@ -60,28 +60,17 @@
       }
 
       .plant-card {
-        width: 20vw;
+        width: 75%;
         margin: auto;
         margin-top: 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 10px;
-        border: 1px solid rgb(174, 174, 184);
-        background-color: rgb(25, 134, 170);
         box-shadow: 5px 5px 5px 20px solid black;
         margin: 10px;
       }
 
-      table {
-        width: 100%;
-      }
-
-      th,
-      td {
-        width: 50px;
-        padding: 5px;
-      }
     </style>
     <!-- Need to add js file -->
   </head>
@@ -119,38 +108,19 @@
       <% } %>
     </ul>
 
-    <!-- Logout button -->
+    <!-- Logout and Change Password buttons -->
     <div>
       <a href="/users/logout">Logout</a>
-    </div>
-
-    <!-- Change password button -->
-    <div>
+      <br>
+      <br>
       <a href="/users/changePass">Change Password</a>
-    </div>
-
-    <!-- Discussion Board button -->
-    <div>
-      <a href="/users/discussionBoard">Discussion Board</a>
     </div>
 
     <!-- Say hello to user by name -->
     <h3>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h3>
 
     <div id="liked-plants">
-      <h3>Liked Plants</h3>
       <div class="plant-card">
-        <img
-          class="plant"
-          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
-          alt="Plant Image"
-        />
-        <h3>Plant Name</h3>
-        <img
-          class="star"
-          src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
-          alt="Empty Star"
-        />
         <button onclick="showAllPlants()">Show All Plants</button>
         <button onclick="showFavoritePlants()">Show My Favorite Plants</button>
         <button onclick="hideAllPlants()">Hide All Plants</button>
@@ -227,6 +197,7 @@
               placeholder="Plant ID"
               required
             />
+            <br>
             <input
               type="text"
               id="title"
@@ -241,6 +212,7 @@
               placeholder="Content"
               required
             />
+            <br>
             <input
               type="number"
               step="1"
@@ -251,6 +223,7 @@
               placeholder="Rating"
               required
             />
+            <br>
             <input type="submit" value="Post" />
           </div>
         </form>
