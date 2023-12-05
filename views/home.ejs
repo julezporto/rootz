@@ -246,6 +246,7 @@
         function showBestRootzDetails(data) {
           const bestRootz = data[0];
           bestRootzDiv.innerHTML = `      <h3>Best Rootz</h3>
+          <img id="best-rootz-img" src="${bestRootz.imageURL}"/>
       <table>
         <thead>
           <tr>
@@ -367,41 +368,6 @@
         <br />
         <button type="submit">Submit</button>
       </form>
-    </div>
-
-    <div class="plant-list">
-      <img
-        class="plant"
-        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/plantExample.jpg?v=1698683903468"
-        alt="Plant Image"
-      />
-      <h3>Plant Name</h3>
-      <img
-        class="star"
-        src="https://cdn.glitch.global/4cf42ca2-4f10-4b7c-b9ba-da3c09eb0926/empty_star.png?v=1698688473551"
-        alt="Empty Star"
-        style="width: 20px; height: 20px"
-      />
-
-      <h4>Bio Name</h4>
-      <table>
-        <thead>
-          <tr>
-            <th class="brightness">Brightness</th>
-            <th class="temperature">Temperature</th>
-            <th class="humidity">Humidity</th>
-            <th class="water">Water</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="brightness-val"></td>
-            <td class="temperature-val"></td>
-            <td class="humidity-val"></td>
-            <td class="water-val"></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
     <footer class="footer"></footer>
   </body>
